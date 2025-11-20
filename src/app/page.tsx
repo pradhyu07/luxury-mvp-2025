@@ -28,7 +28,7 @@ export default async function Home() {
           <p className="text-2xl md:text-4xl text-amber-100 mb-10">Exclusive US Luxury Hotels</p>
           <form action="/api/create-checkout-session" method="POST">
             <button className="bg-amber-500 hover:bg-amber-400 text-black px-16 py-6 text-xl font-bold rounded-full transition">
-              Join Club – $999/mo
+              Join Club - $999/mo
             </button>
           </form>
         </div>
@@ -37,8 +37,9 @@ export default async function Home() {
       {/* HOTELS GRID */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <h2 className="text-5xl font-bold text-center mb-16 text-amber-500">Our Exclusive Hotels</h2>
+
         {hotels.length === 0 ? (
-          <p className="text-center text-gray-400">No hotels yet – add some in Supabase!</p>
+          <p className="text-center text-gray-400 col-span-full">No hotels yet – add some in Supabase!</p>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {hotels.map((hotel: any) => (
