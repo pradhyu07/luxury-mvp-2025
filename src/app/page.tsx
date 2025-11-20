@@ -9,7 +9,6 @@ async function getHotels() {
 }
 
 export default async function Home() {
-  {
   const hotels = await getHotels()
 
   return (
@@ -37,7 +36,7 @@ export default async function Home() {
 
       {/* HOTELS GRID */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
-        <h2 className="text-5xl font-bold text-center mb-16 text-amber-amber-500">Our Exclusive Hotels</h2>
+        <h2 className="text-5xl font-bold text-center mb-16 text-amber-500">Our Exclusive Hotels</h2>
         {hotels.length === 0 ? (
           <p className="text-center text-gray-400">No hotels yet – add some in Supabase!</p>
         ) : (
@@ -66,6 +65,5 @@ export default async function Home() {
         )}
       </section>
     </div>
-    }
+  )
 }
-)
