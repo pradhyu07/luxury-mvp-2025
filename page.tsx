@@ -1,41 +1,47 @@
-import { supabase } from "@/lib/supabase";
-
-export const revalidate = 0; // No cache — always fresh
+import Image from "next/image";
+import { createClient } from '@/lib/supabase';
 
 async function getHotels() {
-  const { data } = await supabase.from("hotels").select("name");
-  return data || [];
+  const supabase = createClient()
+  const { data } = await supabase.from('hotels').select('*')
+  return data || []
 }
 
 export default async function Home() {
   const hotels = await getHotels();
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center flex-col gap-10">
-      <h1 className="text-6xl font-bold text-amber-500">SERENOVA</h1>
-      <p className="text-3xl">Exclusive Luxury Hotels</p>
-
-      <div className="text-center">
-        <h2 className="text-4xl mb-8 text-amber-400">Hotel List (Live from Supabase)</h2>
-
-        {hotels.length === 0 ? (
-          <p className="text-gray-400 text-xl">No hotels found – add some in Supabase!</p>
+    <div className="min-h-screen bg-black text-white">
+      {/* Your hero section here */}
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <h2 className="text-5xl font-bold text-center mb-16 text-amber-500">Our Exclusive Hotels</h2>
+        {(!hotels || hotels.length === 0) ? (
+          <p className="text-center text-gray-400">No hotels yet – add some in Supabase!</p>
         ) : (
-          <ul className="space-y-4 text-2xl">
-            {hotels.map((hotel: any, index) => (
-              <li key={index} className="text-amber-300">
-                {hotel.name}
-              </li>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {hotels.map((hotel: any) => (
+              <div key={hotel.id} className="group relative rounded-2xl overflow-hidden bg-gray-900/50 border border-amber-500/30">
+                <div className="aspect-video relative">
+                  <Image
+                    src={hotel.images?.[0] || "https://images.unsplash.com/photo-1566073771259-6a8506099945"}
+                    fill
+                    className="object-cover group-hover:scale-110 transition"
+                    alt={hotel.name}
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="text-3xl font-bold mb-2">{hotel.name}</h3>
+                  <p className="text-amber-400 mb-4">{hotel.location}</p>
+                  <p className="text-4xl font-bold">
+                    ${hotel.price_per_night?.toLocaleString()}
+                    <span className="text-xl">/night</span>
+                  </p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
-      </div>
-
-      <form action="/api/create-checkout-session" method="POST">
-        <button className="bg-amber-500 hover:bg-amber-400 text-black px-16 py-6 text-2xl font-bold rounded-full mt-10">
-          Join Club – $999/mo
-        </button>
-      </form>
+      </section>
     </div>
   );
 }
